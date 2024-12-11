@@ -1,29 +1,59 @@
 const log = console.log;
 const bodyEl = document.querySelector('body');
 
-calculatorContainer = document.createElement('div');
-inputField = document.createElement('input');
-digitsContainer = document.createElement('div');
-operationsContainer = document.createElement('div');
+function CalculatorContainer() {
+    this.calculatorContainer = document.createElement('div');
+    this.calculatorContainer.id = "calculator-container";
+    this.calculatorContainer.style.background = 'red';
+    return this.calculatorContainer;
+}
+
+function TextField() {
+    this.textField = document.createElement('div');
+    this.textField.textContent = '0';
+    this.textField.style.background = 'white';
+    this.textField.id = 'text-field';
+    return this.textField;
+}
+
+function DigOpContainer() {
+    this.digOpContainer = document.createElement('div');
+    this.digOpContainer.id = 'digOp-container';
+    return this.digOpContainer;
+}
+
+function DigitsContainer() {
+    this.digitsContainer = document.createElement('div');
+    this.digitsContainer.id = 'digits-container';
+    this.digitsContainer.style.background = 'blue';
+    return this.digitsContainer;
+}
+
+function OperationContainer() {
+    this.operationsContainer = document.createElement('div');
+    this.operationsContainer.id = 'operations-container';
+    return this.operationsContainer;
+}
 
 
-function digitBtn() {
+function DigitBtn() {
     this.digit = document.createElement('button');
-    this.digit.id = 'digit';
+    this.digit.classList = 'digit';
     this.digit.style.background = 'yellow';
     this.digit.textContent = '1000';
     return this.digit;
 }
 
-function operationBtn(operation) {
+function OperationBtn(operation) {
     this.operation = document.createElement('button');
     this.operation.id = `${operation}`;
     this.operation.style.background = 'pink';
+    this.operation.classList = 'operations';
     this.operation.textContent = operation;
     return this.operation;
 }
 
-function resetBtn() {
+function ResetBtn() {
     this.resetBtn = document.createElement('button');
     this.resetBtn.id = 'AC';
     this.resetBtn.style.background = 'brown';
@@ -36,9 +66,9 @@ function createButton(btnType_string) {
     switch (btnType_string) {
         case 'digit':
             for( let i = 0; i < 10; i++) {
-                newButton = new digitBtn();
+                newButton = new DigitBtn();
                 newButton.textContent = `${i}`;
-                digitsContainer.appendChild(newButton);
+                digitsCont.appendChild(newButton);
             }
             break;
         case 'operation':
@@ -61,22 +91,33 @@ function createButton(btnType_string) {
                         operation = '=';
                         break;
                 }
-                newButton = new operationBtn(operation);
-                operationsContainer.appendChild(newButton);
+                newButton = new OperationBtn(operation);
+                operationsCont.appendChild(newButton);
             }
             break;
         case 'reset':
-            return newButton = new resetBtn();
+            return newButton = new ResetBtn();
             // calculatorContainer.appendChild(newButton);
             break;
     }        
 }
 
-calculatorContainer.appendChild(inputField);
-calculatorContainer.appendChild(digitsContainer);
-calculatorContainer.appendChild(operationsContainer);
-digitsContainer.appendChild(createButton('reset'));
+const calcContainer = new CalculatorContainer();
+const inputFl = new TextField();
+const resetButton = new ResetBtn();
+const digOpCont = new DigOpContainer();
+const digitsCont = new DigitsContainer();
+const operationsCont = new OperationContainer();
+
+calcContainer.appendChild(inputFl);
+calcContainer.appendChild(createButton('reset'));
+calcContainer.appendChild(digOpCont);
+digOpCont.appendChild(digitsCont);
+digOpCont.appendChild(operationsCont);
 createButton('digit');
 createButton('operation');
 
-bodyEl.appendChild(calculatorContainer);
+bodyEl.appendChild(calcContainer);
+
+
+//------------------------- OPERATIONS ------------------//

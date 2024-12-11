@@ -1,0 +1,72 @@
+/* "calculator-container"
+'text-field';
+'digOp-container'
+'digits-container'
+'operations-container'
+'digit'
+/
+*
+-
++
+=
+'AC' */
+
+/* alternative and more specific setup */
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 40px; 
+    box-sizing: border-box; 
+    -webkit-box-sizing: border-box; 
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    /* outline: 2px solid red; */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+}
+
+#calculator-container {
+    border: solid black 2px;
+}
+
+#text-field {
+    display: flex;
+    justify-content: end;
+}
+
+#digOp-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#digits-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.digit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 90px;
+}
+
+#operations-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.operations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    width: 90px;
+}
+
