@@ -30,6 +30,8 @@ function createButtons(type) {
                 newButton = new CalcBtn('digit', `${[i]}`);
                 digitsCont.appendChild(newButton);
             }
+            newButton = new CalcBtn('digit', ',', 'dot');
+            digitsCont.appendChild(newButton);
             break;
         case 'operation':
             let operation = '';
@@ -58,23 +60,25 @@ function createButtons(type) {
     }
 }
 
- //-----------------------------------------
+//-----------------------------------------
 
- const calcContainer = new Container('calculator-container');
- const inputFl = new Container('text-field', '0');
- const resetButton = new CalcBtn('AC', 'AC', 'AC');
- const digOpCont = new Container('digOp-container');
- const digitsCont = new Container('digits-container');
- const operationsCont = new Container('operations-container');
+const calcContainer = new Container('calculator-container');
+const inputContainer = new Container('text-field', '0');
+const resetButton = new CalcBtn('AC', 'AC', 'AC');
+const buttonsContainer = new Container('buttons-container');
+const resetDigitCont = new Container('reset-digit-container');
+const digitsCont = new Container('digits-container');
+const operationsCont = new Container('operations-container');
  
- calcContainer.appendChild(inputFl);
- calcContainer.appendChild(resetButton);
- calcContainer.appendChild(digOpCont);
- digOpCont.appendChild(digitsCont);
- digOpCont.appendChild(operationsCont);
- createButtons('digit');
- createButtons('operation');
+calcContainer.appendChild(inputContainer);
+calcContainer.appendChild(buttonsContainer);
+buttonsContainer.appendChild(resetDigitCont);
+resetDigitCont.appendChild(resetButton);
+resetDigitCont.appendChild(digitsCont);
+buttonsContainer.appendChild(operationsCont);
+createButtons('digit');
+createButtons('operation');
  
- bodyEl.appendChild(calcContainer);
+bodyEl.appendChild(calcContainer);
 
 //------------------------- OPERATIONS ------------------//
