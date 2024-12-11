@@ -26,12 +26,23 @@ function createButtons(type) {
     let newButton = '';
     switch(type) {
         case 'digit':
-            for(let i=0; i <10; i++) {
-                newButton = new CalcBtn('digit', `${[i]}`);
+            // Create digits in reverse order for calculator-style layout
+            const order = [
+                7, 8, 9,
+                4, 5, 6,
+                1, 2, 3,
+                0, '.' // 0 at the bottom with dot
+            ];
+            order.forEach(value => {
+                const buttonText = value.toString(); // Convert to string
+                let newButton = '';
+                if(buttonText === '.')
+                    newButton = new CalcBtn('digit', buttonText, 'dot');
+                else
+                    newButton = new CalcBtn('digit', buttonText);
+
                 digitsCont.appendChild(newButton);
-            }
-            newButton = new CalcBtn('digit', ',', 'dot');
-            digitsCont.appendChild(newButton);
+            });
             break;
         case 'operation':
             let operation = '';
@@ -64,7 +75,7 @@ function createButtons(type) {
 
 const calcContainer = new Container('calculator-container');
 const inputContainer = new Container('text-field', '0');
-const resetButton = new CalcBtn('AC', 'AC', 'AC');
+const resetButton = new CalcBtn('digit', 'AC', 'AC');
 const buttonsContainer = new Container('buttons-container');
 const resetDigitCont = new Container('reset-digit-container');
 const digitsCont = new Container('digits-container');

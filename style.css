@@ -1,16 +1,3 @@
-/* "calculator-container"
-'text-field';
-'digOp-container'
-'digits-container'
-'operations-container'
-'digit'
-/
-*
--
-+
-=
-'AC' */
-
 /* alternative and more specific setup */
 * {
     padding: 0;
@@ -27,11 +14,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
     background-color: orange;
 }
 
 #calculator-container {
     border: solid black 2px;
+    width: 364px;
 }
 
 #text-field {
@@ -39,14 +29,27 @@ body {
     justify-content: end;
 }
 
-#digOp-container {
+#buttons-container {
     display: flex;
-    flex-direction: row;
+}
+
+#reset-digit-container {
+    display: flex;
+    flex-direction: column;
 }
 
 #digits-container {
     display: flex;
     flex-wrap: wrap;
+}
+
+#operations-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#AC.digit {
+    width: 270px;
 }
 
 .digit {
@@ -57,9 +60,9 @@ body {
     width: 90px;
 }
 
-#operations-container {
-    display: flex;
-    flex-direction: column;
+#dot.digit {
+    width: 180px;
+
 }
 
 .operations {
@@ -69,4 +72,3 @@ body {
     height: 70px;
     width: 90px;
 }
-
