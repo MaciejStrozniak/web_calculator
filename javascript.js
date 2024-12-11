@@ -37,6 +37,7 @@ function createButton(btnType_string) {
         case 'digit':
             for( let i = 0; i < 10; i++) {
                 newButton = new digitBtn();
+                newButton.textContent = `${i}`;
                 digitsContainer.appendChild(newButton);
             }
             break;
