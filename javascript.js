@@ -35,6 +35,63 @@ function OperationContainer() {
     return this.operationsContainer;
 }
 
+//--------- NEW BUTTON CONSTRUCTOR ---------
+function CalcBtn(html_element, id, textContent, class_name) {
+    this.calcButton = document.createElement(`${html_element}`);
+    this.calcButton.id = id;
+    this.calcButton.textContent = `${textContent}`;
+    this.calcButton.classList = class_name;
+    return this.calcButton;
+}
+//------------------------------------------
+
+//--------- NEW BUTTON CREATE FUNCTION -----
+function createButton_new(button_obj) {
+
+}
+
+function createButton(btnType_string) {
+    let newButton = '';
+    switch (btnType_string) {
+        case 'digit':
+            for( let i = 0; i < 10; i++) {
+                newButton = new DigitBtn();
+                newButton.textContent = `${i}`;
+                digitsCont.appendChild(newButton);
+            }
+            break;
+        case 'operation':
+            let operation = '';;
+            for(let i =0; i < 5; i++) {
+                switch(i) {
+                    case 0:
+                        operation = '/';
+                        break;
+                    case 1:
+                        operation = '*';
+                        break;
+                    case 2:
+                        operation = '-';
+                        break;
+                    case 3:
+                        operation = '+';
+                        break;
+                    case 4:
+                        operation = '=';
+                        break;
+                }
+                newButton = new OperationBtn(operation);
+                operationsCont.appendChild(newButton);
+            }
+            break;
+        case 'reset':
+            return newButton = new ResetBtn();
+            // calculatorContainer.appendChild(newButton);
+            break;
+    }        
+}
+
+//------------------------------------------
 
 function DigitBtn() {
     this.digit = document.createElement('button');
