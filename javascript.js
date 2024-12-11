@@ -1,57 +1,81 @@
 const log = console.log;
 const bodyEl = document.querySelector('body');
 
-function Calculator(node) {
-    this.calculator = document.createElement('div');
-    this.inputField = document.createElement('input');
-    this.reset = document.createElement('button');
-    this.digitContainer = document.createElement('div');
-    this.operationsContainer = document.createElement('div');
-    this.sum = document.createElement('button');
+calculatorContainer = document.createElement('div');
+inputField = document.createElement('input');
+digitsContainer = document.createElement('div');
+operationsContainer = document.createElement('div');
 
-    this.buildCalc = function() {
 
-        for(let i = 0; i < 10; i++) {
-            this.digit = document.createElement('button');
-            this.digit.textContent = `${i}`;
-            this.digitContainer.appendChild(this.digit); 
-        };
+function digitBtn() {
+    this.digit = document.createElement('button');
+    this.digit.id = 'digit';
+    this.digit.style.background = 'yellow';
+    this.digit.textContent = '1000';
+    return this.digit;
+}
 
-        for(let i = 0; i < 4; i++) {
-            this.operation = document.createElement('button');
+function operationBtn(operation) {
+    this.operation = document.createElement('button');
+    this.operation.id = `${operation}`;
+    this.operation.style.background = 'pink';
+    this.operation.textContent = operation;
+    return this.operation;
+}
 
-            switch (i) {
-                case 0:
-                    this.operation.textContent = '/';
-                    break;
-                case 1:
-                    this.operation.textContent = '*';
-                    break;
-                case 2:
-                    this.operation.textContent = '-';
-                    break;
-                case 3:
-                    this.operation.textContent = '+';
-                    break;
+function resetBtn() {
+    this.resetBtn = document.createElement('button');
+    this.resetBtn.id = 'AC';
+    this.resetBtn.style.background = 'brown';
+    this.resetBtn.textContent = 'AC';
+    return this.resetBtn;
+}
+
+function createButton(btnType_string) {
+    let newButton = '';
+    switch (btnType_string) {
+        case 'digit':
+            for( let i = 0; i < 10; i++) {
+                newButton = new digitBtn();
+                digitsContainer.appendChild(newButton);
             }
+            break;
+        case 'operation':
+            let operation = '';;
+            for(let i =0; i < 5; i++) {
+                switch(i) {
+                    case 0:
+                        operation = '/';
+                        break;
+                    case 1:
+                        operation = '*';
+                        break;
+                    case 2:
+                        operation = '-';
+                        break;
+                    case 3:
+                        operation = '+';
+                        break;
+                    case 4:
+                        operation = '=';
+                        break;
+                }
+                newButton = new operationBtn(operation);
+                operationsContainer.appendChild(newButton);
+            }
+            break;
+        case 'reset':
+            return newButton = new resetBtn();
+            // calculatorContainer.appendChild(newButton);
+            break;
+    }        
+}
 
-            this.operationsContainer.appendChild(this.operation);
-        };
+calculatorContainer.appendChild(inputField);
+calculatorContainer.appendChild(digitsContainer);
+calculatorContainer.appendChild(operationsContainer);
+digitsContainer.appendChild(createButton('reset'));
+createButton('digit');
+createButton('operation');
 
-        this.reset.textContent = 'AC';
-        this.sum.textContent = '='
-
-        this.calculator.appendChild(this.inputField);
-        this.calculator.appendChild(this.reset);
-        this.calculator.appendChild(this.digitContainer);
-        this.calculator.appendChild(this.operationsContainer);
-        this.calculator.appendChild(this.sum);
-
-        node.appendChild(this.calculator);
-    };
-
-
-};
-
-const calc1 = new Calculator(bodyEl);
-calc1.buildCalc();
+bodyEl.appendChild(calculatorContainer);
