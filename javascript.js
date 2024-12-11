@@ -1,43 +1,19 @@
 const log = console.log;
 const bodyEl = document.querySelector('body');
 
-function CalculatorContainer() {
-    this.calculatorContainer = document.createElement('div');
-    this.calculatorContainer.id = "calculator-container";
-    this.calculatorContainer.style.background = 'red';
-    return this.calculatorContainer;
+//--------- NEW CONTAINERS CONSTRUCTOR -----
+function Container(id, textContent) {
+    this.container = document.createElement('div');
+    this.container.id = id;
+    this.container.textContent = textContent;
+    return this.container;
 }
 
-function TextField() {
-    this.textField = document.createElement('div');
-    this.textField.textContent = '0';
-    this.textField.style.background = 'white';
-    this.textField.id = 'text-field';
-    return this.textField;
-}
-
-function DigOpContainer() {
-    this.digOpContainer = document.createElement('div');
-    this.digOpContainer.id = 'digOp-container';
-    return this.digOpContainer;
-}
-
-function DigitsContainer() {
-    this.digitsContainer = document.createElement('div');
-    this.digitsContainer.id = 'digits-container';
-    this.digitsContainer.style.background = 'blue';
-    return this.digitsContainer;
-}
-
-function OperationContainer() {
-    this.operationsContainer = document.createElement('div');
-    this.operationsContainer.id = 'operations-container';
-    return this.operationsContainer;
-}
+//------------------------------------------
 
 //--------- NEW BUTTON CONSTRUCTOR ---------
-function CalcBtn(html_element, id, textContent, class_name) {
-    this.calcButton = document.createElement(`${html_element}`);
+function CalcBtn(class_name, textContent, id) {
+    this.calcButton = document.createElement(`button`);
     this.calcButton.id = id;
     this.calcButton.textContent = `${textContent}`;
     this.calcButton.classList = class_name;
@@ -46,22 +22,17 @@ function CalcBtn(html_element, id, textContent, class_name) {
 //------------------------------------------
 
 //--------- NEW BUTTON CREATE FUNCTION -----
-function createButton_new(button_obj) {
-
-}
-
-function createButton(btnType_string) {
+function createButtons(type) {
     let newButton = '';
-    switch (btnType_string) {
+    switch(type) {
         case 'digit':
-            for( let i = 0; i < 10; i++) {
-                newButton = new DigitBtn();
-                newButton.textContent = `${i}`;
+            for(let i=0; i <10; i++) {
+                newButton = new CalcBtn('digit', `${[i]}`);
                 digitsCont.appendChild(newButton);
             }
             break;
         case 'operation':
-            let operation = '';;
+            let operation = '';
             for(let i =0; i < 5; i++) {
                 switch(i) {
                     case 0:
@@ -80,101 +51,30 @@ function createButton(btnType_string) {
                         operation = '=';
                         break;
                 }
-                newButton = new OperationBtn(operation);
+                newButton = new CalcBtn('operations', `${operation}`, `${operation}`);
                 operationsCont.appendChild(newButton);
             }
             break;
-        case 'reset':
-            return newButton = new ResetBtn();
-            // calculatorContainer.appendChild(newButton);
-            break;
-    }        
+    }
 }
 
-//------------------------------------------
+ //-----------------------------------------
 
-function DigitBtn() {
-    this.digit = document.createElement('button');
-    this.digit.classList = 'digit';
-    this.digit.style.background = 'yellow';
-    this.digit.textContent = '1000';
-    return this.digit;
-}
-
-function OperationBtn(operation) {
-    this.operation = document.createElement('button');
-    this.operation.id = `${operation}`;
-    this.operation.style.background = 'pink';
-    this.operation.classList = 'operations';
-    this.operation.textContent = operation;
-    return this.operation;
-}
-
-function ResetBtn() {
-    this.resetBtn = document.createElement('button');
-    this.resetBtn.id = 'AC';
-    this.resetBtn.style.background = 'brown';
-    this.resetBtn.textContent = 'AC';
-    return this.resetBtn;
-}
-
-function createButton(btnType_string) {
-    let newButton = '';
-    switch (btnType_string) {
-        case 'digit':
-            for( let i = 0; i < 10; i++) {
-                newButton = new DigitBtn();
-                newButton.textContent = `${i}`;
-                digitsCont.appendChild(newButton);
-            }
-            break;
-        case 'operation':
-            let operation = '';;
-            for(let i =0; i < 5; i++) {
-                switch(i) {
-                    case 0:
-                        operation = '/';
-                        break;
-                    case 1:
-                        operation = '*';
-                        break;
-                    case 2:
-                        operation = '-';
-                        break;
-                    case 3:
-                        operation = '+';
-                        break;
-                    case 4:
-                        operation = '=';
-                        break;
-                }
-                newButton = new OperationBtn(operation);
-                operationsCont.appendChild(newButton);
-            }
-            break;
-        case 'reset':
-            return newButton = new ResetBtn();
-            // calculatorContainer.appendChild(newButton);
-            break;
-    }        
-}
-
-const calcContainer = new CalculatorContainer();
-const inputFl = new TextField();
-const resetButton = new ResetBtn();
-const digOpCont = new DigOpContainer();
-const digitsCont = new DigitsContainer();
-const operationsCont = new OperationContainer();
-
-calcContainer.appendChild(inputFl);
-calcContainer.appendChild(createButton('reset'));
-calcContainer.appendChild(digOpCont);
-digOpCont.appendChild(digitsCont);
-digOpCont.appendChild(operationsCont);
-createButton('digit');
-createButton('operation');
-
-bodyEl.appendChild(calcContainer);
-
+ const calcContainer = new Container('calculator-container');
+ const inputFl = new Container('text-field', '0');
+ const resetButton = new CalcBtn('AC', 'AC', 'AC');
+ const digOpCont = new Container('digOp-container');
+ const digitsCont = new Container('digits-container');
+ const operationsCont = new Container('operations-container');
+ 
+ calcContainer.appendChild(inputFl);
+ calcContainer.appendChild(resetButton);
+ calcContainer.appendChild(digOpCont);
+ digOpCont.appendChild(digitsCont);
+ digOpCont.appendChild(operationsCont);
+ createButtons('digit');
+ createButtons('operation');
+ 
+ bodyEl.appendChild(calcContainer);
 
 //------------------------- OPERATIONS ------------------//
