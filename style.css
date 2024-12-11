@@ -27,6 +27,9 @@ body {
 #text-field {
     display: flex;
     justify-content: end;
+    align-items: center;
+    height: 70px;
+    padding-right: 10px;
 }
 
 #buttons-container {
