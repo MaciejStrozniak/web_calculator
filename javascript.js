@@ -1,9 +1,9 @@
 const log = console.log;
 const bodyEl = document.querySelector('body');
-let num1 = 0;
-let num2 = 0;
-let sum = 0;
-let mathOperation = '';
+let num1 = null;
+let num2 = null;
+let sum = null;
+let mathOperation = null;
 let keepCalculating = true;
 
 //--------- NEW CONTAINERS CONSTRUCTOR -----
@@ -126,6 +126,91 @@ bodyEl.appendChild(calcContainer);
 
 //------------------------- OPERATIONS ------------------//
 
+// document.addEventListener('click', (event) => {
+
+//     let textFieldNewValue = document.querySelector('#text-field').textContent;
+//     const target = event.target;
+//     const targetClass = target.className;
+//     const targetID = target.id;
+//     let targetText = target.textContent;
+
+
+//     // ustawiam num1
+//     // wybieram działanie
+//     // ustawiam num2
+//     // wybieram nowe działanie
+//     // w text field wyświetla się wynik pierwszego działania
+//     // wybieram nową liczbę, która jest wyświetlana i
+//     //      kalkulowana jest z wynikiem pierwszego działania
+//     //      na podstawie nowego działania
+//     // wybieram kolejne działanie
+//     //      wyświetalny jest wynik poprzedniego działania
+    
+
+//     if(targetClass === 'digit' && mathOperation === null) {
+//         if(textFieldNewValue === '0') {
+//             textFieldNewValue = '';
+//             document.querySelector('#text-field').textContent = textFieldNewValue;
+//         }
+
+//         if (textFieldNewValue !== '0' && keepCalculating === true) {
+//             textFieldNewValue += targetText;
+//             document.querySelector('#text-field').textContent = textFieldNewValue;
+//             num1 = parseInt(textFieldNewValue);
+//         }
+//         else if (textFieldNewValue !== '0' && keepCalculating === false) {
+//             textFieldNewValue = targetText;
+//             document.querySelector('#text-field').textContent = textFieldNewValue;
+//             num1 = parseInt(textFieldNewValue);
+//             keepCalculating = true;
+//         }    
+//     }
+//     else if(targetClass === 'operations' && mathOperation === null) {
+//         switch (targetID) {
+//             case '/':
+//                 mathOperation = '/';
+//                 break;
+//             case '*':
+//                 mathOperation = '*';
+//                 break;
+//             case '-':
+//                 mathOperation = '-';
+//                 break;
+//             case '+':
+//                 mathOperation = '+';
+//                 break;
+//         }
+//     }
+//     else if(targetClass === 'digit' && mathOperation !== null) {
+//         if(num1 !== 0 && num2 === 0) {
+//             textFieldNewValue = targetText;
+//             document.querySelector('#text-field').textContent = textFieldNewValue;
+//             num2 = parseInt(textFieldNewValue);
+//         }
+//         else {
+//             textFieldNewValue += targetText;
+//             document.querySelector('#text-field').textContent = textFieldNewValue;
+//             num2 = parseInt(textFieldNewValue);
+//             log(`${num1} and ${num2}`);
+//         }        
+//     }
+    
+//     // if((targetClass === 'operations' && mathOperation !== null))
+
+//     else if((targetClass === 'operations') && (mathOperation !== null && num1 !== null && num2 !== null)) {
+//         let calculations = new calculateMathOperation(num1, num2, mathOperation);
+//         textFieldNewValue = calculations.calculate();
+//         document.querySelector('#text-field').textContent = textFieldNewValue;
+//         log(num1);
+//         num1 = parseFloat(textFieldNewValue);
+//         num2 = 0;
+//         mathOperation = '';
+//         keepCalculating = false;
+//         log(num1, num2, mathOperation);
+//     }
+// });
+
+
 document.addEventListener('click', (event) => {
 
     let textFieldNewValue = document.querySelector('#text-field').textContent;
@@ -134,75 +219,54 @@ document.addEventListener('click', (event) => {
     const targetID = target.id;
     let targetText = target.textContent;
 
-
-    // ustawiam num1
-    // wybieram działanie
-    // ustawiam num2
-    // wybieram nowe działanie
-    // w text field wyświetla się wynik pierwszego działania
-    // wybieram nową liczbę, która jest wyświetlana i
-    //      kalkulowana jest z wynikiem pierwszego działania
-    //      na podstawie nowego działania
-    // wybieram kolejne działanie
-    //      wyświetalny jest wynik poprzedniego działania
-    
-
-
-    if(targetClass === 'digit' && mathOperation === '') {
-        if(textFieldNewValue === '0') {
-            textFieldNewValue = '';
-            document.querySelector('#text-field').textContent = textFieldNewValue;
-        }
-        if (textFieldNewValue !== '0' && keepCalculating === true) {
-            textFieldNewValue += targetText;
-            document.querySelector('#text-field').textContent = textFieldNewValue;
-            num1 = parseInt(textFieldNewValue);
-        }
-        else if (textFieldNewValue !== '0' && keepCalculating === false) {
-            textFieldNewValue = targetText;
-            document.querySelector('#text-field').textContent = textFieldNewValue;
-            num1 = parseInt(textFieldNewValue);
-            keepCalculating = true;
-        }    
-    }
-    else if(targetClass === 'operations') {
-        switch (targetID) {
-            case '/':
-                mathOperation = '/';
-                break;
-            case '*':
-                mathOperation = '*';
-                break;
-            case '-':
-                mathOperation = '-';
-                break;
-            case '+':
-                mathOperation = '+';
-                break;
-        }
-    }
-    else if(targetClass === 'digit' && mathOperation !== '') {
-        if(num1 !== 0 && num2 === 0) {
-            textFieldNewValue = targetText;
-            document.querySelector('#text-field').textContent = textFieldNewValue;
-            num2 = parseInt(textFieldNewValue);
+    if(targetClass === 'digit' && mathOperation === null) {
+        if(num1 === null) {
+            num1 = parseFloat(targetText);
+            log(num1);
         }
         else {
-            textFieldNewValue += targetText;
-            document.querySelector('#text-field').textContent = textFieldNewValue;
-            num2 = parseInt(textFieldNewValue);
-            log(`${num1} and ${num2}`);
+            num1 += parseFloat(targetText);
+            // num1 = parseFloat(num1);
+            log(num1);
         }        
     }
-    
-    if((targetClass === 'operations') && (mathOperation !== '' && num1 !== 0 && num2 !== 0)) {
-        let calculations = new calculateMathOperation(num1, num2, mathOperation);
-        textFieldNewValue = calculations.calculate();
-        document.querySelector('#text-field').textContent = textFieldNewValue;
-        num1 = parseFloat(textFieldNewValue);
-        // num2 = 0;
-        mathOperation = '';
-        keepCalculating = false;
-        log(num1, num2, mathOperation);
+    else if(targetClass === 'operations' && num1 !== null) {
+        if(mathOperation === null) {
+            mathOperation = targetText;
+            log(mathOperation);
+        }
+        else {
+            if(num1 != null && num2 !== null && sum === null) {
+                let calculationObj = new calculateMathOperation(num1, num2, mathOperation);
+                sum = parseFloat(calculationObj.calculate());
+                log(parseFloat(sum));
+                num1 === null;
+                num2 === null;
+                mathOperation === null;
+                delete calculationObj;
+                log('DELETE!');
+            }
+            //mathOperation = targetText;
+            else if(num1 != null && num2 !== null && sum !== null) {
+                let calculationObj = new calculateMathOperation(num1, num2, mathOperation);
+                sum += calculationObj.calculate();
+                log(parseFloat(sum));
+                num1 === null;
+                num2 === null;
+                mathOperation === null;
+                delete calculationObj;
+                log('DELETE TWO!');
+            }
+        }
     }
+    else if(targetClass === 'digit' && mathOperation !== null)
+        if(num2 === null) {
+            num2 = parseFloat(targetText);
+            log(num2);
+        }
+        else {
+            num2 += parseFloat(targetText);
+            // num2 = parseFloat(num1);
+            log(num2);
+        }
 });
