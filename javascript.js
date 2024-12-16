@@ -2,6 +2,7 @@ const log = console.log;
 const bodyEl = document.querySelector('body');
 let num1 = 0;
 let num2 = 0;
+let sum = 0;
 let mathOperation = '';
 let keepCalculating = true;
 
@@ -134,21 +135,35 @@ document.addEventListener('click', (event) => {
     let targetText = target.textContent;
 
 
-    if((targetClass === 'digit' || targetClass === 'operations') && (mathOperation !== '' && num1 !== 0 && num2 !== 0)) {
-        let calculations = new calculateMathOperation(num1, num2, mathOperation);
-        textFieldNewValue = calculations.calculate();
-        document.querySelector('#text-field').textContent = textFieldNewValue;
-        mathOperation = '';
-    }
-    else if(targetClass === 'digit' && mathOperation === '') {
+    // ustawiam num1
+    // wybieram działanie
+    // ustawiam num2
+    // wybieram nowe działanie
+    // w text field wyświetla się wynik pierwszego działania
+    // wybieram nową liczbę, która jest wyświetlana i
+    //      kalkulowana jest z wynikiem pierwszego działania
+    //      na podstawie nowego działania
+    // wybieram kolejne działanie
+    //      wyświetalny jest wynik poprzedniego działania
+    
+
+
+    if(targetClass === 'digit' && mathOperation === '') {
         if(textFieldNewValue === '0') {
             textFieldNewValue = '';
             document.querySelector('#text-field').textContent = textFieldNewValue;
         }
-
-        textFieldNewValue += targetText;
-        document.querySelector('#text-field').textContent = textFieldNewValue;
-        num1 = parseInt(textFieldNewValue);
+        if (textFieldNewValue !== '0' && keepCalculating === true) {
+            textFieldNewValue += targetText;
+            document.querySelector('#text-field').textContent = textFieldNewValue;
+            num1 = parseInt(textFieldNewValue);
+        }
+        else if (textFieldNewValue !== '0' && keepCalculating === false) {
+            textFieldNewValue = targetText;
+            document.querySelector('#text-field').textContent = textFieldNewValue;
+            num1 = parseInt(textFieldNewValue);
+            keepCalculating = true;
+        }    
     }
     else if(targetClass === 'operations') {
         switch (targetID) {
@@ -165,7 +180,6 @@ document.addEventListener('click', (event) => {
                 mathOperation = '+';
                 break;
         }
-        log(mathOperation);
     }
     else if(targetClass === 'digit' && mathOperation !== '') {
         if(num1 !== 0 && num2 === 0) {
@@ -179,5 +193,16 @@ document.addEventListener('click', (event) => {
             num2 = parseInt(textFieldNewValue);
             log(`${num1} and ${num2}`);
         }        
-    }   
+    }
+    
+    if((targetClass === 'operations') && (mathOperation !== '' && num1 !== 0 && num2 !== 0)) {
+        let calculations = new calculateMathOperation(num1, num2, mathOperation);
+        textFieldNewValue = calculations.calculate();
+        document.querySelector('#text-field').textContent = textFieldNewValue;
+        num1 = parseFloat(textFieldNewValue);
+        // num2 = 0;
+        mathOperation = '';
+        keepCalculating = false;
+        log(num1, num2, mathOperation);
+    }
 });
