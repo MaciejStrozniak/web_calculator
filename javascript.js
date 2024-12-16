@@ -1,5 +1,9 @@
 const log = console.log;
 const bodyEl = document.querySelector('body');
+let num1 = 0;
+let num2 = 0;
+let mathOperation = '';
+let keepCalculating = true;
 
 //--------- NEW CONTAINERS CONSTRUCTOR -----
 function Container(id, textContent) {
@@ -20,6 +24,33 @@ function CalcBtn(class_name, textContent, id) {
     return this.calcButton;
 }
 //------------------------------------------
+
+//--------- OPERATION CONSTRUCTOR ---------
+function calculateMathOperation(num1, num2, mathOperation) {
+    this.num1 = num1;
+    this.num2 = num2;
+    this.mathOperation = mathOperation;
+
+    this.calculate = function() {
+        let result = 0;
+        switch(this.mathOperation) {
+            case '/':
+                return result = num1 / num2;
+            case '*':
+                return result = num1 * num2;
+            case '-':
+                return result = num1 - num2;
+            case '+':
+                return result = num1 + num2;
+            // ?????????????????
+            case '=':
+                break;
+            // ?????????????????
+        }
+    }
+}
+//------------------------------------------
+
 
 //--------- NEW BUTTON CREATE FUNCTION -----
 function createButtons(type) {
@@ -93,3 +124,60 @@ createButtons('operation');
 bodyEl.appendChild(calcContainer);
 
 //------------------------- OPERATIONS ------------------//
+
+document.addEventListener('click', (event) => {
+
+    let textFieldNewValue = document.querySelector('#text-field').textContent;
+    const target = event.target;
+    const targetClass = target.className;
+    const targetID = target.id;
+    let targetText = target.textContent;
+
+
+    if((targetClass === 'digit' || targetClass === 'operations') && (mathOperation !== '' && num1 !== 0 && num2 !== 0)) {
+        let calculations = new calculateMathOperation(num1, num2, mathOperation);
+        textFieldNewValue = calculations.calculate();
+        document.querySelector('#text-field').textContent = textFieldNewValue;
+        mathOperation = '';
+    }
+    else if(targetClass === 'digit' && mathOperation === '') {
+        if(textFieldNewValue === '0') {
+            textFieldNewValue = '';
+            document.querySelector('#text-field').textContent = textFieldNewValue;
+        }
+
+        textFieldNewValue += targetText;
+        document.querySelector('#text-field').textContent = textFieldNewValue;
+        num1 = parseInt(textFieldNewValue);
+    }
+    else if(targetClass === 'operations') {
+        switch (targetID) {
+            case '/':
+                mathOperation = '/';
+                break;
+            case '*':
+                mathOperation = '*';
+                break;
+            case '-':
+                mathOperation = '-';
+                break;
+            case '+':
+                mathOperation = '+';
+                break;
+        }
+        log(mathOperation);
+    }
+    else if(targetClass === 'digit' && mathOperation !== '') {
+        if(num1 !== 0 && num2 === 0) {
+            textFieldNewValue = targetText;
+            document.querySelector('#text-field').textContent = textFieldNewValue;
+            num2 = parseInt(textFieldNewValue);
+        }
+        else {
+            textFieldNewValue += targetText;
+            document.querySelector('#text-field').textContent = textFieldNewValue;
+            num2 = parseInt(textFieldNewValue);
+            log(`${num1} and ${num2}`);
+        }        
+    }   
+});
