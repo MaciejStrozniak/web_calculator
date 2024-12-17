@@ -3,6 +3,7 @@ const bodyEl = document.querySelector('body');
 let num1 = null;
 let num2 = null;
 let sum = null;
+let score = null;
 let mathOperation = null;
 let keepCalculating = true;
 
@@ -265,21 +266,23 @@ document.addEventListener('click', (event) => {
     // wybór znaku równa się
     if(targetClass === 'operations' && targetID === '=' && num1 !== null && num2 !== null && mathOperation !== null) {
         num2 = parseFloat(num2);
-        let score = new calculateMathOperation(num1, num2, mathOperation);
+        score = new calculateMathOperation(num1, num2, mathOperation);
         num1 = parseFloat(score.calculate());
         mathOperation = null;
         num2 = null;
 
         log(`Wynik po równa się = ${num1}`);
-        num1 = null;
     }
 
     if(targetClass === 'digit' && targetID === 'AC') {
         num1 = null;
         num2 = null;
+        score = null;
         mathOperation = null;
-
-        log(num1);
     }
 
 });
+
+/// ERROR - po wciśnięciu znaku równania trzeba ustawić zabezpieczenie żeby
+    // reakcja była tylko na znak działania a nie cyfry
+    // jest pomysł z wykorzystaniem score ale trzeba dobrze ustawić flagę
