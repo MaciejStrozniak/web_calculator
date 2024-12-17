@@ -251,8 +251,10 @@ document.addEventListener('click', (event) => {
     }
     // tutaj powstaje pętla po kliknięciu znaku równa się
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === true) {
-        if(num2 === null)
+        if(num2 === null) {
             num2 = targetText;
+            log(num2);
+        }
         else {
             num2 += targetText;
             log('loop');
