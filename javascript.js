@@ -43,10 +43,6 @@ function calculateMathOperation(num1, num2, mathOperation) {
                 return this.num1 - this.num2;
             case '+':
                 return this.num1 + this.num2;
-            // ?????????????????
-            case '=':
-                break;
-            // ?????????????????
         }
     }
 }
@@ -132,20 +128,7 @@ bodyEl.appendChild(calcContainer);
 //     const target = event.target;
 //     const targetClass = target.className;
 //     const targetID = target.id;
-//     let targetText = target.textContent;
-
-
-//     // ustawiam num1
-//     // wybieram działanie
-//     // ustawiam num2
-//     // wybieram nowe działanie
-//     // w text field wyświetla się wynik pierwszego działania
-//     // wybieram nową liczbę, która jest wyświetlana i
-//     //      kalkulowana jest z wynikiem pierwszego działania
-//     //      na podstawie nowego działania
-//     // wybieram kolejne działanie
-//     //      wyświetalny jest wynik poprzedniego działania
-    
+//     let targetText = target.textContent;    
 
 //     if(targetClass === 'digit' && mathOperation === null) {
 //         if(textFieldNewValue === '0') {
@@ -233,6 +216,9 @@ bodyEl.appendChild(calcContainer);
         // mathOperations = nowa operacja => mathOperations !== null
         // num2 = null
 
+    // if key === '=', num1 !== null, num2 !== null, mathOperation !== null
+
+
 document.addEventListener('click', (event) => {
 
     let textFieldNewValue = document.querySelector('#text-field').textContent;
@@ -255,22 +241,45 @@ document.addEventListener('click', (event) => {
         log(typeof(num1));
         log(mathOperation);
     }
+    // tutaj powstaje pętla po pierwszym wyświetleniu działania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null) {
         num2 = targetText;
+        log('loop');
         log(num2);
     }
     else if(targetClass === 'digit' && num1 !== null && num2 !== null && mathOperation !== null) {
         num2 += targetText;
         log(num2);
     }
-    else if(targetClass === 'operations' && num1 !== null && num2 !== null && mathOperation !== null) {
+    // wykonanie obliczeń po wybraniu nowej operacji
+    else if(targetClass === 'operations' && targetID !== '=' && num1 !== null && num2 !== null && mathOperation !== null) {
         num2 = parseFloat(num2);
         let score = new calculateMathOperation(num1, num2, mathOperation);
         num1 = parseFloat(score.calculate());
         mathOperation = targetID;
         num2 = null;
 
-        log(`Wynik = ${num1}`);
+        log(`Wynik = ${num1}`);       
+    }
+    
+    // wybór znaku równa się
+    if(targetClass === 'operations' && targetID === '=' && num1 !== null && num2 !== null && mathOperation !== null) {
+        num2 = parseFloat(num2);
+        let score = new calculateMathOperation(num1, num2, mathOperation);
+        num1 = parseFloat(score.calculate());
+        mathOperation = null;
+        num2 = null;
+
+        log(`Wynik po równa się = ${num1}`);
+        num1 = null;
+    }
+
+    if(targetClass === 'digit' && targetID === 'AC') {
+        num1 = null;
+        num2 = null;
+        mathOperation = null;
+
+        log(num1);
     }
 
 });
