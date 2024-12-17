@@ -36,13 +36,13 @@ function calculateMathOperation(num1, num2, mathOperation) {
         let result = 0;
         switch(this.mathOperation) {
             case '/':
-                return result = num1 / num2;
+                return this.num1 / this.num2;
             case '*':
-                return result = num1 * num2;
+                return this.num1 * this.num2;
             case '-':
-                return result = num1 - num2;
+                return this.num1 - this.num2;
             case '+':
-                return result = num1 + num2;
+                return this.num1 + this.num2;
             // ?????????????????
             case '=':
                 break;
@@ -210,6 +210,28 @@ bodyEl.appendChild(calcContainer);
 //     }
 // });
 
+// jeśli key === 'digit', num1 === null, num2 === null, mathOperation === null
+// wybieram pierwszą liczbę
+    // num1 !== null
+    // jeśli key === 'digit', num1 !== null, num2 === null, methOperation === null
+    // mogę ją wydłużać o kolejne
+        
+    // if key === 'operations', num1 !== null, num2 === null, mathOperation === null 
+        // wybieram działanie
+            // mathOperationa !== null
+            // pierwsza liczba jest parsowana do Int
+
+    // if key === 'digit, num1 !== null, num2 === null, mathOperationa !== null
+        // wybieram kolejną liczbę
+        // num2 !== null
+            // if key === 'digit', num1 !== null, num2 !== null, mathOperation !== null
+            // mogę ją wydłużać
+
+    // if key === 'operations', num1 !== null, num2 !== null, mathOperations !== null
+        // parseFloat(num2)
+        // num1 = wynik działania => num1 !== null
+        // mathOperations = nowa operacja => mathOperations !== null
+        // num2 = null
 
 document.addEventListener('click', (event) => {
 
@@ -219,54 +241,36 @@ document.addEventListener('click', (event) => {
     const targetID = target.id;
     let targetText = target.textContent;
 
-    if(targetClass === 'digit' && mathOperation === null) {
-        if(num1 === null) {
-            num1 = parseFloat(targetText);
-            log(num1);
-        }
-        else {
-            num1 += parseFloat(targetText);
-            // num1 = parseFloat(num1);
-            log(num1);
-        }        
+    if(targetClass === 'digit' && num1 === null && num2 === null && mathOperation === null) {
+        num1 = targetText;
+        log(num1);
     }
-    else if(targetClass === 'operations' && num1 !== null) {
-        if(mathOperation === null) {
-            mathOperation = targetText;
-            log(mathOperation);
-        }
-        else {
-            if(num1 != null && num2 !== null && sum === null) {
-                let calculationObj = new calculateMathOperation(num1, num2, mathOperation);
-                sum = parseFloat(calculationObj.calculate());
-                log(parseFloat(sum));
-                num1 === null;
-                num2 === null;
-                mathOperation === null;
-                delete calculationObj;
-                log('DELETE!');
-            }
-            //mathOperation = targetText;
-            else if(num1 != null && num2 !== null && sum !== null) {
-                let calculationObj = new calculateMathOperation(num1, num2, mathOperation);
-                sum += calculationObj.calculate();
-                log(parseFloat(sum));
-                num1 === null;
-                num2 === null;
-                mathOperation === null;
-                delete calculationObj;
-                log('DELETE TWO!');
-            }
-        }
+    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation === null) {
+        num1 += targetText;
+        log(num1);
     }
-    else if(targetClass === 'digit' && mathOperation !== null)
-        if(num2 === null) {
-            num2 = parseFloat(targetText);
-            log(num2);
-        }
-        else {
-            num2 += parseFloat(targetText);
-            // num2 = parseFloat(num1);
-            log(num2);
-        }
+    else if(targetClass === 'operations' && num1 !== null && num2 === null && mathOperation === null) {
+        mathOperation = targetID;
+        num1 = parseFloat(num1);
+        log(typeof(num1));
+        log(mathOperation);
+    }
+    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null) {
+        num2 = targetText;
+        log(num2);
+    }
+    else if(targetClass === 'digit' && num1 !== null && num2 !== null && mathOperation !== null) {
+        num2 += targetText;
+        log(num2);
+    }
+    else if(targetClass === 'operations' && num1 !== null && num2 !== null && mathOperation !== null) {
+        num2 = parseFloat(num2);
+        let score = new calculateMathOperation(num1, num2, mathOperation);
+        num1 = parseFloat(score.calculate());
+        mathOperation = targetID;
+        num2 = null;
+
+        log(`Wynik = ${num1}`);
+    }
+
 });
