@@ -5,7 +5,7 @@ let num2 = null;
 let sum = null;
 let score = null;
 let mathOperation = null;
-let keepCalculating = true;
+let keepCalculating = false;
 
 //--------- NEW CONTAINERS CONSTRUCTOR -----
 function Container(id, textContent) {
@@ -232,10 +232,11 @@ document.addEventListener('click', (event) => {
         num1 = targetText;
         log(num1);
     }
-    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation === null) {
+    // edit po kliknięciu znaku równania
+    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation === null && keepCalculating === false) {
         num1 += targetText;
         log(num1);
-    }
+    }    
     else if(targetClass === 'operations' && num1 !== null && num2 === null && mathOperation === null) {
         mathOperation = targetID;
         num1 = parseFloat(num1);
@@ -243,10 +244,21 @@ document.addEventListener('click', (event) => {
         log(mathOperation);
     }
     // tutaj powstaje pętla po pierwszym wyświetleniu działania
-    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null) {
+    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === false) {
         num2 = targetText;
         log('loop');
         log(num2);
+    }
+    // tutaj powstaje pętla po kliknięciu znaku równa się
+    else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === true) {
+        if(num2 === null)
+            num2 = targetText;
+        else {
+            num2 += targetText;
+            log('loop');
+            log(num2);
+        }
+        
     }
     else if(targetClass === 'digit' && num1 !== null && num2 !== null && mathOperation !== null) {
         num2 += targetText;
@@ -270,6 +282,7 @@ document.addEventListener('click', (event) => {
         num1 = parseFloat(score.calculate());
         mathOperation = null;
         num2 = null;
+        keepCalculating = true;
 
         log(`Wynik po równa się = ${num1}`);
     }
@@ -279,6 +292,7 @@ document.addEventListener('click', (event) => {
         num2 = null;
         score = null;
         mathOperation = null;
+        keepCalculating = false;
     }
 
 });
