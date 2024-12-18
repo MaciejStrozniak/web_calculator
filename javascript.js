@@ -289,7 +289,10 @@ document.addEventListener('click', (event) => {
         log(`Wynik po równa się = ${num1}`);
     }
 
+    // AC
     if(targetClass === 'digit' && targetID === 'AC') {
+        num1 = 0;
+        log(num1);
         num1 = null;
         num2 = null;
         score = null;
