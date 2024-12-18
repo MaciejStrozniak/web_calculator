@@ -156,7 +156,7 @@ document.addEventListener('click', (event) => {
     else if(targetClass === 'operations' && num1 !== null && num2 === null && mathOperation === null) {
         mathOperation = targetID;
         dotButton.disabled = false;
-        num1 = parseFloat(num1).toFixed(3);
+        num1 = parseFloat(num1);
     }
     // tutaj powstaje pętla po pierwszym wyświetleniu działania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === false) {
@@ -191,9 +191,9 @@ document.addEventListener('click', (event) => {
     // wykonanie obliczeń po wybraniu nowej operacji
     else if(targetClass === 'operations' && targetID !== '=' && num1 !== null && num2 !== null && mathOperation !== null) {
         dotButton.disabled = false;
-        num2 = parseFloat(num2).toFixed(3);
+        num2 = parseFloat(num2);
         let score = new calculateMathOperation(num1, num2, mathOperation);
-        num1 = parseFloat(score.calculate()).toFixed(3);
+        num1 = parseFloat(score.calculate());
         mathOperation = targetID;
         num2 = null;
 
@@ -202,9 +202,9 @@ document.addEventListener('click', (event) => {
     
     // wybór znaku równa się
     if(targetClass === 'operations' && targetID === '=' && num1 !== null && num2 !== null && mathOperation !== null) {
-        num2 = parseFloat(num2).toFixed(3);
+        num2 = parseFloat(num2);
         score = new calculateMathOperation(num1, num2, mathOperation);
-        num1 = parseFloat(score.calculate()).toFixed(3);
+        num1 = parseFloat(score.calculate());
         num2 = mathOperation = null;
         keepCalculating = true;
         dotButton.disabled = false;
