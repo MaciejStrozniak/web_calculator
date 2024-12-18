@@ -3,7 +3,6 @@ const bodyEl = document.querySelector('body');
 let num1 = null;
 let num2 = null;
 let score = null;
-let dotUsed = false;
 let mathOperation = null;
 let keepCalculating = false;
 
@@ -49,12 +48,14 @@ function calculateMathOperation(num1, num2, mathOperation) {
 }
 //------------------------------------------
 
+//--------- NUMBERS DISPLAY FUNCTION ---------
 function displayNumbers(num1, num2) {
     if(num1 !== null && num2 === null)
         document.querySelector('#text-field').textContent = num1;
     else
         document.querySelector('#text-field').textContent = num2;
 }
+//-----------------------------------------
 
 //--------- NEW BUTTON CREATE FUNCTION -----
 function createButtons(type) {
@@ -138,30 +139,29 @@ document.addEventListener('click', (event) => {
     const targetID = target.id;
     let targetText = target.textContent;
 
-    function checkIfDotIsUsed(targetID) {
+    if(targetClass === 'digit' && num1 === null && num2 === null && mathOperation === null) {
         if(targetID === 'dot')
             dotButton.disabled = true;
-    }
-
-    if(targetClass === 'digit' && num1 === null && num2 === null && mathOperation === null) {
-        checkIfDotIsUsed(targetID);
         num1 = targetText;
         displayNumbers(num1, null);
     }
     // edit po kliknięciu znaku równania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation === null && keepCalculating === false) {
-        checkIfDotIsUsed(targetID);
+        if(targetID === 'dot')
+            dotButton.disabled = true;
         num1 += targetText;
 
         displayNumbers(num1, null);
     }
     else if(targetClass === 'operations' && num1 !== null && num2 === null && mathOperation === null) {
         mathOperation = targetID;
-        num1 = parseFloat(num1);
+        dotButton.disabled = false;
+        num1 = parseFloat(num1).toFixed(3);
     }
     // tutaj powstaje pętla po pierwszym wyświetleniu działania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === false) {
-        checkIfDotIsUsed(targetID);
+        if(targetID === 'dot')
+            dotButton.disabled = true;
         
         num2 = targetText;
         
@@ -170,23 +170,30 @@ document.addEventListener('click', (event) => {
     // tutaj powstaje pętla po kliknięciu znaku równa się
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === true) {
         if(num2 === null) {
+            if(targetID === 'dot')
+                dotButton.disabled = true;
             num2 = targetText;
             displayNumbers(null, num2);
         }
         else {
+            if(targetID === 'dot')
+                dotButton.disabled = true;
             num2 += targetText;
             displayNumbers(null, num2);
         }        
     }
     else if(targetClass === 'digit' && num1 !== null && num2 !== null && mathOperation !== null) {
+        if(targetID === 'dot')
+            dotButton.disabled = true;
         num2 += targetText;
         displayNumbers(null, num2);
     }
     // wykonanie obliczeń po wybraniu nowej operacji
     else if(targetClass === 'operations' && targetID !== '=' && num1 !== null && num2 !== null && mathOperation !== null) {
-        num2 = parseFloat(num2);
+        dotButton.disabled = false;
+        num2 = parseFloat(num2).toFixed(3);
         let score = new calculateMathOperation(num1, num2, mathOperation);
-        num1 = parseFloat(score.calculate());
+        num1 = parseFloat(score.calculate()).toFixed(3);
         mathOperation = targetID;
         num2 = null;
 
@@ -195,11 +202,12 @@ document.addEventListener('click', (event) => {
     
     // wybór znaku równa się
     if(targetClass === 'operations' && targetID === '=' && num1 !== null && num2 !== null && mathOperation !== null) {
-        num2 = parseFloat(num2);
+        num2 = parseFloat(num2).toFixed(3);
         score = new calculateMathOperation(num1, num2, mathOperation);
-        num1 = parseFloat(score.calculate());
+        num1 = parseFloat(score.calculate()).toFixed(3);
         num2 = mathOperation = null;
         keepCalculating = true;
+        dotButton.disabled = false;
 
         displayNumbers(num1, null);    
     }
@@ -210,5 +218,6 @@ document.addEventListener('click', (event) => {
         displayNumbers(num1, null);
         num1 = num2 = score = mathOperation = null;
         keepCalculating = false;
+        dotButton.disabled = false;
     }
 });
