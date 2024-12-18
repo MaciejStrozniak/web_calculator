@@ -2,8 +2,8 @@ const log = console.log;
 const bodyEl = document.querySelector('body');
 let num1 = null;
 let num2 = null;
-let sum = null;
 let score = null;
+let dotUsed = false;
 let mathOperation = null;
 let keepCalculating = false;
 
@@ -49,6 +49,12 @@ function calculateMathOperation(num1, num2, mathOperation) {
 }
 //------------------------------------------
 
+function displayNumbers(num1, num2) {
+    if(num1 !== null && num2 === null)
+        document.querySelector('#text-field').textContent = num1;
+    else
+        document.querySelector('#text-field').textContent = num2;
+}
 
 //--------- NEW BUTTON CREATE FUNCTION -----
 function createButtons(type) {
@@ -123,148 +129,58 @@ bodyEl.appendChild(calcContainer);
 
 //------------------------- OPERATIONS ------------------//
 
-// document.addEventListener('click', (event) => {
-
-//     let textFieldNewValue = document.querySelector('#text-field').textContent;
-//     const target = event.target;
-//     const targetClass = target.className;
-//     const targetID = target.id;
-//     let targetText = target.textContent;    
-
-//     if(targetClass === 'digit' && mathOperation === null) {
-//         if(textFieldNewValue === '0') {
-//             textFieldNewValue = '';
-//             document.querySelector('#text-field').textContent = textFieldNewValue;
-//         }
-
-//         if (textFieldNewValue !== '0' && keepCalculating === true) {
-//             textFieldNewValue += targetText;
-//             document.querySelector('#text-field').textContent = textFieldNewValue;
-//             num1 = parseInt(textFieldNewValue);
-//         }
-//         else if (textFieldNewValue !== '0' && keepCalculating === false) {
-//             textFieldNewValue = targetText;
-//             document.querySelector('#text-field').textContent = textFieldNewValue;
-//             num1 = parseInt(textFieldNewValue);
-//             keepCalculating = true;
-//         }    
-//     }
-//     else if(targetClass === 'operations' && mathOperation === null) {
-//         switch (targetID) {
-//             case '/':
-//                 mathOperation = '/';
-//                 break;
-//             case '*':
-//                 mathOperation = '*';
-//                 break;
-//             case '-':
-//                 mathOperation = '-';
-//                 break;
-//             case '+':
-//                 mathOperation = '+';
-//                 break;
-//         }
-//     }
-//     else if(targetClass === 'digit' && mathOperation !== null) {
-//         if(num1 !== 0 && num2 === 0) {
-//             textFieldNewValue = targetText;
-//             document.querySelector('#text-field').textContent = textFieldNewValue;
-//             num2 = parseInt(textFieldNewValue);
-//         }
-//         else {
-//             textFieldNewValue += targetText;
-//             document.querySelector('#text-field').textContent = textFieldNewValue;
-//             num2 = parseInt(textFieldNewValue);
-//             log(`${num1} and ${num2}`);
-//         }        
-//     }
-    
-//     // if((targetClass === 'operations' && mathOperation !== null))
-
-//     else if((targetClass === 'operations') && (mathOperation !== null && num1 !== null && num2 !== null)) {
-//         let calculations = new calculateMathOperation(num1, num2, mathOperation);
-//         textFieldNewValue = calculations.calculate();
-//         document.querySelector('#text-field').textContent = textFieldNewValue;
-//         log(num1);
-//         num1 = parseFloat(textFieldNewValue);
-//         num2 = 0;
-//         mathOperation = '';
-//         keepCalculating = false;
-//         log(num1, num2, mathOperation);
-//     }
-// });
-
-// jeśli key === 'digit', num1 === null, num2 === null, mathOperation === null
-// wybieram pierwszą liczbę
-    // num1 !== null
-    // jeśli key === 'digit', num1 !== null, num2 === null, methOperation === null
-    // mogę ją wydłużać o kolejne
-        
-    // if key === 'operations', num1 !== null, num2 === null, mathOperation === null 
-        // wybieram działanie
-            // mathOperationa !== null
-            // pierwsza liczba jest parsowana do Int
-
-    // if key === 'digit, num1 !== null, num2 === null, mathOperationa !== null
-        // wybieram kolejną liczbę
-        // num2 !== null
-            // if key === 'digit', num1 !== null, num2 !== null, mathOperation !== null
-            // mogę ją wydłużać
-
-    // if key === 'operations', num1 !== null, num2 !== null, mathOperations !== null
-        // parseFloat(num2)
-        // num1 = wynik działania => num1 !== null
-        // mathOperations = nowa operacja => mathOperations !== null
-        // num2 = null
-
-    // if key === '=', num1 !== null, num2 !== null, mathOperation !== null
-
-
 document.addEventListener('click', (event) => {
 
     let textFieldNewValue = document.querySelector('#text-field').textContent;
+    const dotButton = document.querySelector('#dot');
     const target = event.target;
     const targetClass = target.className;
     const targetID = target.id;
     let targetText = target.textContent;
 
+    function checkIfDotIsUsed(targetID) {
+        if(targetID === 'dot')
+            dotButton.disabled = true;
+    }
+
     if(targetClass === 'digit' && num1 === null && num2 === null && mathOperation === null) {
+        checkIfDotIsUsed(targetID);
         num1 = targetText;
-        log(num1);
+        displayNumbers(num1, null);
     }
     // edit po kliknięciu znaku równania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation === null && keepCalculating === false) {
+        checkIfDotIsUsed(targetID);
         num1 += targetText;
-        log(num1);
-    }    
+
+        displayNumbers(num1, null);
+    }
     else if(targetClass === 'operations' && num1 !== null && num2 === null && mathOperation === null) {
         mathOperation = targetID;
         num1 = parseFloat(num1);
-        log(typeof(num1));
-        log(mathOperation);
     }
     // tutaj powstaje pętla po pierwszym wyświetleniu działania
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === false) {
+        checkIfDotIsUsed(targetID);
+        
         num2 = targetText;
-        log('loop');
-        log(num2);
+        
+        displayNumbers(null, num2);
     }
     // tutaj powstaje pętla po kliknięciu znaku równa się
     else if(targetClass === 'digit' && num1 !== null && num2 === null && mathOperation !== null && keepCalculating === true) {
         if(num2 === null) {
             num2 = targetText;
-            log(num2);
+            displayNumbers(null, num2);
         }
         else {
             num2 += targetText;
-            log('loop');
-            log(num2);
-        }
-        
+            displayNumbers(null, num2);
+        }        
     }
     else if(targetClass === 'digit' && num1 !== null && num2 !== null && mathOperation !== null) {
         num2 += targetText;
-        log(num2);
+        displayNumbers(null, num2);
     }
     // wykonanie obliczeń po wybraniu nowej operacji
     else if(targetClass === 'operations' && targetID !== '=' && num1 !== null && num2 !== null && mathOperation !== null) {
@@ -274,7 +190,7 @@ document.addEventListener('click', (event) => {
         mathOperation = targetID;
         num2 = null;
 
-        log(`Wynik = ${num1}`);       
+        displayNumbers(num1, null);    
     }
     
     // wybór znaku równa się
@@ -282,26 +198,17 @@ document.addEventListener('click', (event) => {
         num2 = parseFloat(num2);
         score = new calculateMathOperation(num1, num2, mathOperation);
         num1 = parseFloat(score.calculate());
-        mathOperation = null;
-        num2 = null;
+        num2 = mathOperation = null;
         keepCalculating = true;
 
-        log(`Wynik po równa się = ${num1}`);
+        displayNumbers(num1, null);    
     }
 
     // AC
     if(targetClass === 'digit' && targetID === 'AC') {
         num1 = 0;
-        log(num1);
-        num1 = null;
-        num2 = null;
-        score = null;
-        mathOperation = null;
+        displayNumbers(num1, null);
+        num1 = num2 = score = mathOperation = null;
         keepCalculating = false;
     }
-
 });
-
-/// ERROR - po wciśnięciu znaku równania trzeba ustawić zabezpieczenie żeby
-    // reakcja była tylko na znak działania a nie cyfry
-    // jest pomysł z wykorzystaniem score ale trzeba dobrze ustawić flagę
