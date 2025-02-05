@@ -6,6 +6,8 @@ let score = null;
 let mathOperation = null;
 let keepCalculating = false;
 
+// just testing github
+
 //--------- NEW CONTAINERS CONSTRUCTOR -----
 function Container(id, textContent) {
     this.container = document.createElement('div');
